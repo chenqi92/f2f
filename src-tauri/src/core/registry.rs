@@ -152,7 +152,7 @@ pub fn initialize(_app_handle: &AppHandle) -> Result<()> {
 fn register_builtin_converters(registry: &Registry) -> Result<()> {
     use crate::types::*;
 
-    // 示例：Pandoc DOCX -> Markdown 转换器
+    // 1. Pandoc DOCX -> Markdown
     registry.register(CapabilityRecord {
         id: "pandoc-docx-md".to_string(),
         name: "Pandoc DOCX to Markdown".to_string(),
@@ -196,6 +196,233 @@ fn register_builtin_converters(registry: &Registry) -> Result<()> {
         parallelism: 1,
         streaming: false,
     })?;
+
+    // 2. Pandoc DOCX -> PDF
+    registry.register(CapabilityRecord {
+        id: "pandoc-docx-pdf".to_string(),
+        name: "Pandoc DOCX to PDF".to_string(),
+        version: "3.0.0".to_string(),
+        license: "GPL-2.0".to_string(),
+        vendor: "John MacFarlane".to_string(),
+        binary_path: None,
+        inputs: vec![FormatSpec {
+            mime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document".to_string(),
+            extensions: vec!["docx".to_string()],
+        }],
+        outputs: vec![FormatSpec {
+            mime: "application/pdf".to_string(),
+            extensions: vec!["pdf".to_string()],
+        }],
+        quality: 0.85,
+        speed: 0.7,
+        cost: ResourceCost {
+            cpu: 0.7,
+            memory: 0.5,
+            gpu: 0.0,
+        },
+        requires: Requirements {
+            tools: vec!["pandoc".to_string()],
+            lang_packs: vec![],
+            fonts: vec![],
+        },
+        preserve: PreserveFeatures {
+            styles: PreserveLevel::Partial,
+            links: PreserveLevel::True,
+            footnotes: PreserveLevel::True,
+            headers: PreserveLevel::True,
+            lists: PreserveLevel::True,
+            tables: PreserveLevel::True,
+            images: PreserveLevel::True,
+            formulas: PreserveLevel::Partial,
+        },
+        risks: vec!["复杂排版可能失真".to_string()],
+        timeout_s: Some(600),
+        max_mem_mb: Some(1024),
+        parallelism: 1,
+        streaming: false,
+    })?;
+
+    // 3. Pandoc Markdown -> DOCX
+    registry.register(CapabilityRecord {
+        id: "pandoc-md-docx".to_string(),
+        name: "Pandoc Markdown to DOCX".to_string(),
+        version: "3.0.0".to_string(),
+        license: "GPL-2.0".to_string(),
+        vendor: "John MacFarlane".to_string(),
+        binary_path: None,
+        inputs: vec![FormatSpec {
+            mime: "text/markdown".to_string(),
+            extensions: vec!["md".to_string(), "markdown".to_string()],
+        }],
+        outputs: vec![FormatSpec {
+            mime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document".to_string(),
+            extensions: vec!["docx".to_string()],
+        }],
+        quality: 0.88,
+        speed: 0.85,
+        cost: ResourceCost {
+            cpu: 0.4,
+            memory: 0.3,
+            gpu: 0.0,
+        },
+        requires: Requirements {
+            tools: vec!["pandoc".to_string()],
+            lang_packs: vec![],
+            fonts: vec![],
+        },
+        preserve: PreserveFeatures {
+            styles: PreserveLevel::Partial,
+            links: PreserveLevel::True,
+            footnotes: PreserveLevel::True,
+            headers: PreserveLevel::True,
+            lists: PreserveLevel::True,
+            tables: PreserveLevel::True,
+            images: PreserveLevel::True,
+            formulas: PreserveLevel::False,
+        },
+        risks: vec![],
+        timeout_s: Some(300),
+        max_mem_mb: Some(512),
+        parallelism: 1,
+        streaming: false,
+    })?;
+
+    // 4. Pandoc Markdown -> HTML
+    registry.register(CapabilityRecord {
+        id: "pandoc-md-html".to_string(),
+        name: "Pandoc Markdown to HTML".to_string(),
+        version: "3.0.0".to_string(),
+        license: "GPL-2.0".to_string(),
+        vendor: "John MacFarlane".to_string(),
+        binary_path: None,
+        inputs: vec![FormatSpec {
+            mime: "text/markdown".to_string(),
+            extensions: vec!["md".to_string(), "markdown".to_string()],
+        }],
+        outputs: vec![FormatSpec {
+            mime: "text/html".to_string(),
+            extensions: vec!["html".to_string()],
+        }],
+        quality: 0.95,
+        speed: 0.9,
+        cost: ResourceCost {
+            cpu: 0.3,
+            memory: 0.2,
+            gpu: 0.0,
+        },
+        requires: Requirements {
+            tools: vec!["pandoc".to_string()],
+            lang_packs: vec![],
+            fonts: vec![],
+        },
+        preserve: PreserveFeatures {
+            styles: PreserveLevel::True,
+            links: PreserveLevel::True,
+            footnotes: PreserveLevel::True,
+            headers: PreserveLevel::True,
+            lists: PreserveLevel::True,
+            tables: PreserveLevel::True,
+            images: PreserveLevel::True,
+            formulas: PreserveLevel::Partial,
+        },
+        risks: vec![],
+        timeout_s: Some(180),
+        max_mem_mb: Some(256),
+        parallelism: 1,
+        streaming: false,
+    })?;
+
+    // 5. ImageMagick PNG -> WebP
+    registry.register(CapabilityRecord {
+        id: "imagemagick-png-webp".to_string(),
+        name: "ImageMagick PNG to WebP".to_string(),
+        version: "7.1.0".to_string(),
+        license: "Apache-2.0".to_string(),
+        vendor: "ImageMagick Studio".to_string(),
+        binary_path: None,
+        inputs: vec![FormatSpec {
+            mime: "image/png".to_string(),
+            extensions: vec!["png".to_string()],
+        }],
+        outputs: vec![FormatSpec {
+            mime: "image/webp".to_string(),
+            extensions: vec!["webp".to_string()],
+        }],
+        quality: 0.92,
+        speed: 0.85,
+        cost: ResourceCost {
+            cpu: 0.6,
+            memory: 0.4,
+            gpu: 0.0,
+        },
+        requires: Requirements {
+            tools: vec!["magick".to_string()],
+            lang_packs: vec![],
+            fonts: vec![],
+        },
+        preserve: PreserveFeatures {
+            styles: PreserveLevel::True,
+            links: PreserveLevel::False,
+            footnotes: PreserveLevel::False,
+            headers: PreserveLevel::False,
+            lists: PreserveLevel::False,
+            tables: PreserveLevel::False,
+            images: PreserveLevel::True,
+            formulas: PreserveLevel::False,
+        },
+        risks: vec!["有损压缩".to_string()],
+        timeout_s: Some(120),
+        max_mem_mb: Some(2048),
+        parallelism: 4,
+        streaming: false,
+    })?;
+
+    // 6. ImageMagick JPG -> PNG
+    registry.register(CapabilityRecord {
+        id: "imagemagick-jpg-png".to_string(),
+        name: "ImageMagick JPG to PNG".to_string(),
+        version: "7.1.0".to_string(),
+        license: "Apache-2.0".to_string(),
+        vendor: "ImageMagick Studio".to_string(),
+        binary_path: None,
+        inputs: vec![FormatSpec {
+            mime: "image/jpeg".to_string(),
+            extensions: vec!["jpg".to_string(), "jpeg".to_string()],
+        }],
+        outputs: vec![FormatSpec {
+            mime: "image/png".to_string(),
+            extensions: vec!["png".to_string()],
+        }],
+        quality: 1.0,
+        speed: 0.9,
+        cost: ResourceCost {
+            cpu: 0.4,
+            memory: 0.3,
+            gpu: 0.0,
+        },
+        requires: Requirements {
+            tools: vec!["magick".to_string()],
+            lang_packs: vec![],
+            fonts: vec![],
+        },
+        preserve: PreserveFeatures {
+            styles: PreserveLevel::True,
+            links: PreserveLevel::False,
+            footnotes: PreserveLevel::False,
+            headers: PreserveLevel::False,
+            lists: PreserveLevel::False,
+            tables: PreserveLevel::False,
+            images: PreserveLevel::True,
+            formulas: PreserveLevel::False,
+        },
+        risks: vec![],
+        timeout_s: Some(120),
+        max_mem_mb: Some(2048),
+        parallelism: 4,
+        streaming: false,
+    })?;
+
+    tracing::info!("Registered {} converters", 6);
 
     Ok(())
 }

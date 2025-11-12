@@ -61,7 +61,7 @@ impl Storage {
     /// 创建临时工作目录
     pub fn create_temp_dir(&self) -> Result<PathBuf> {
         let temp_dir = tempfile::tempdir()
-            .map_err(|e| crate::error::AppError::IoError(e))?;
+            .map_err(|e| crate::error::AppError::IoError(e.to_string()))?;
 
         Ok(temp_dir.into_path())
     }

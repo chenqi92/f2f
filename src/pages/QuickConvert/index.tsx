@@ -19,7 +19,10 @@ export function QuickConvert() {
       try {
         setIsLoading(true);
         // 获取第一个文件的可转换目标
-        const availableTargets = await planTargets(selectedFiles[0].name);
+        const firstFile = selectedFiles[0];
+        if (!firstFile) return;
+
+        const availableTargets = await planTargets(firstFile.name);
         setTargets(availableTargets);
 
         // 自动选择第一个推荐的目标
@@ -27,7 +30,10 @@ export function QuickConvert() {
         if (recommended) {
           setSelectedTarget(recommended.format);
         } else if (availableTargets.length > 0) {
-          setSelectedTarget(availableTargets[0].format);
+          const firstTarget = availableTargets[0];
+          if (firstTarget) {
+            setSelectedTarget(firstTarget.format);
+          }
         }
       } catch (err) {
         setError(`获取转换目标失败: ${err}`);

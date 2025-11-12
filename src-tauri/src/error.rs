@@ -14,7 +14,7 @@ pub enum AppError {
     ToolError(String),
 
     #[error("IO error: {0}")]
-    IoError(#[from] std::io::Error),
+    IoError(String),
 
     #[error("Operation cancelled")]
     Cancelled,
@@ -32,6 +32,12 @@ pub enum AppError {
 impl From<rusqlite::Error> for AppError {
     fn from(err: rusqlite::Error) -> Self {
         AppError::DatabaseError(err.to_string())
+    }
+}
+
+impl From<std::io::Error> for AppError {
+    fn from(err: std::io::Error) -> Self {
+        AppError::IoError(err.to_string())
     }
 }
 

@@ -1,19 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node --version:*)",
-      "Bash(npm --version:*)",
-      "Bash(rustc:*)",
-      "Bash(cargo --version:*)",
-      "Bash(npm create tauri-app@latest . -- --yes --manager npm --template react-ts)",
-      "Bash(npm install)",
-      "Bash(npm run type-check:*)",
-      "Bash(cargo check:*)",
-      "Bash(cargo clean:*)",
-      "Bash(pnpm install)",
-      "Bash(pnpm type-check:*)",
-      "Bash(TAURI_SKIP_WEBVIEW_INSTALL=true cargo check:*)",
-      "Bash(tree:*)"
+      "Bash(dir:*)",
+      "Bash(nul)",
+      "Bash(powershell -Command:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File create-icon.ps1)",
+      "Bash(powershell:*)",
+      "Bash(pnpm tauri icon --help:*)",
+      "Bash(pnpm tauri icon:*)",
+      "Bash(pnpm tauri:dev:*)"
     ],
     "deny": [],
     "ask": []
