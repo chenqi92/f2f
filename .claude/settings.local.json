@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --version:*)",
+      "Bash(npm --version:*)",
+      "Bash(rustc:*)",
+      "Bash(cargo --version:*)",
+      "Bash(npm create tauri-app@latest . -- --yes --manager npm --template react-ts)",
+      "Bash(npm install)",
+      "Bash(npm run type-check:*)",
+      "Bash(cargo check:*)",
+      "Bash(cargo clean:*)",
+      "Bash(pnpm install)",
+      "Bash(pnpm type-check:*)",
+      "Bash(TAURI_SKIP_WEBVIEW_INSTALL=true cargo check:*)",
+      "Bash(tree:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
